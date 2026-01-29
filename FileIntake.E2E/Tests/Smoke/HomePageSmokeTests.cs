@@ -42,5 +42,6 @@ public class HomePageSmokeTests
 
         var title = await _page.TitleAsync();
         Assert.That(title, Is.Not.Empty);
+        Assert.That(title, Does.Contain("FileIntake"));
     }
 }
