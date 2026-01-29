@@ -134,7 +134,18 @@ ipch/
 *.sap
 
 # Visual Studio Trace Files
-*.e2e
+#*.e2e
+!FileIntake.E2E/
+!FileIntake.E2E/**
+
+# .NET build output
+**/bin/
+**/obj/
+
+# Playwright generated artifacts (from .NET)
+**/.playwright/
+**/playwright.ps1
+**/playwright.cmd
 
 # TFS 2012 Local Workspace
 $tf/
