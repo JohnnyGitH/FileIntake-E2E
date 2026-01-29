@@ -21,3 +21,8 @@ This repo uses **Playwright for .NET** to run browser-based tests against the de
 dotnet restore
 dotnet build
 ```
+
+2. 🧪 Run Tests
+```bash
+dotnet test
+```
