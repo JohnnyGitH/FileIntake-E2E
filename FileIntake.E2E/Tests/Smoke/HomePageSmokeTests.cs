@@ -1,3 +1,4 @@
+using FileIntake.E2E.Config;
 using Microsoft.Playwright;
 using NUnit.Framework;
 
@@ -12,10 +13,7 @@ public class HomePageSmokeTests
     private IPage _page;
 
     // UAT base URL (Hardcoded for now, will env-var this later)
-    private static string BaseUrl =>
-    Environment.GetEnvironmentVariable("FILEINTAKE_BASE_URL")
-    ?? throw new InvalidOperationException(
-        "FILEINTAKE_BASE_URL environment variable is not set");
+    private  string BaseUrl => TestConfig.GetRequiredBaseUrlOrSkip().Trim('/');
 
     [OneTimeSetUp]
     public async Task GlobalSetup()
@@ -28,6 +26,13 @@ public class HomePageSmokeTests
 
         _context = await _browser.NewContextAsync();
         _page = await _context.NewPageAsync();
+    }
+
+    [OneTimeTearDown]
+    public async Task OneTimeTearDown()
+    {
+        if (_browser != null) await _browser.CloseAsync();
+        _playwright?.Dispose();
     }
 
     [Test]
