@@ -13,7 +13,7 @@ jobs:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork == false
 
     env:
-      FILEINTAKE_BASE_URL: ${{ vars.FILEINTAKE_UAT_BASE_URL }}
+      FILEINTAKE_BASE_URL: ${{ secrets.FILEINTAKE_UAT_BASE_URL }}
 
       # Optional for later when I add login tests
       # FILEINTAKE_DEMO_EMAIL: ${{ secrets.FILEINTAKE_DEMO_EMAIL }}
