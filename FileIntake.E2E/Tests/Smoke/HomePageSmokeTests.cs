@@ -73,16 +73,33 @@ public class HomePageSmokeTests
     }
 
     [Test]
-    public async Task FileIntakePageLoads()
+    public async Task FileIntakePage_RequiresLogin_RedirectToLoginPage()
     {
         // Arrange
         var page = await NewPageAsync();
 
-        // Act
-        await page.GotoAsync($"{BaseUrl}/FileIntake", new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle});
+        var response = await page.GotoAsync($"{BaseUrl}/FileIntake", new PageGotoOptions { WaitUntil = WaitUntilState.DOMContentLoaded});
 
-        // Assert
-        var fileInputs = await page.Locator("input[type='file']").CountAsync();
-        Assert.That(fileInputs, Is.GreaterThanOrEqualTo(1));
+        Assert.That(response, Is.Not.Null);
+
+        // Confirm Redirect Happened
+        Assert.That(page.Url, Does.Contain("/Identity/Account/Login"));
+        // Confirm UI is correct
+        await page.Locator("input[name='Input.Email']").WaitForAsync();
+        await page.Locator("input[name='Input.Password']").WaitForAsync();
     }
+
+    // [Test] NEED TO FIGURE OUT LOGIN SETUP TO GET HERE
+    // public async Task FileIntakePageLoads()
+    // {
+    //     // Arrange
+    //     var page = await NewPageAsync();
+
+    //     // Act
+    //     await page.GotoAsync($"{BaseUrl}/FileIntake", new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle});
+
+    //     // Assert
+    //     var fileInputs = await page.Locator("input[type='file']").CountAsync();
+    //     Assert.That(fileInputs, Is.GreaterThanOrEqualTo(1));
+    // }
 }

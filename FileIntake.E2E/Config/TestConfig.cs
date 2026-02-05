@@ -1,5 +1,3 @@
-using System.Net.NetworkInformation;
-
 namespace FileIntake.E2E.Config;
 
 public static class TestConfig
