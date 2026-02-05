@@ -1,0 +1,45 @@
+name: E2E (UAT)
+
+on:
+  pull_request:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    # Prevent forked PRs from trying to use my secrets/vars
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork == false
+
+    env:
+      FILEINTAKE_BASE_URL: ${{ vars.FILEINTAKE_UAT_BASE_URL }}
+
+      # Optional for later when I add login tests
+      # FILEINTAKE_DEMO_EMAIL: ${{ secrets.FILEINTAKE_DEMO_EMAIL }}
+      # FILEINTAKE_DEMO_PASSWORD: ${{ secrets.FILEINTAKE_DEMO_PASSWORD }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      # Install Playwright browsers for the built test project
+      - name: Install Playwright Browsers
+        working-directory: FileIntake.E2E
+        run: |
+          pwsh ./bin/Release/net8.0/playwright.ps1 install --with-deps
+
+      - name: Run E2E Tests (UAT)
+        working-directory: FileIntake.E2E
+        run: dotnet test --configuration Release --no-build --verbosity normal
