@@ -1,4 +1,4 @@
-name: E2E (UAT)
+name: ⚙️ E2E (UAT)
 
 on:
   pull_request:
@@ -20,7 +20,7 @@ jobs:
       # FILEINTAKE_DEMO_PASSWORD: ${{ secrets.FILEINTAKE_DEMO_PASSWORD }}
 
     steps:
-      - name: Checkout
+      - name: 📥 Checkout
         uses: actions/checkout@v4
     
       - name: 🪲 Debug repo contents
@@ -34,23 +34,23 @@ jobs:
             echo "Find csproj:"
             find . -maxdepth 6 -name "*.csproj" -print
 
-      - name: Setup .NET
+      - name: 🔧 Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
 
-      - name: Restore
-        run: dotnet restore ./FileIntakeE2E/FileIntakeE2E.sln
+      - name: 📦 Restore
+        run: dotnet restore ./FileIntake.E2E/FileIntake.E2E.csproj
 
-      - name: Build
-        run: dotnet build --configuration Release --no-restore
+      - name: 🏗️ Build
+        run: dotnet build ./FileIntake.E2E/FileIntake.E2E.csproj -c Release --no-restore
 
       # Install Playwright browsers for the built test project
-      - name: Install Playwright Browsers
+      - name: 🎭 Install Playwright Browsers
         working-directory: FileIntake.E2E
         run: |
           pwsh ./bin/Release/net8.0/playwright.ps1 install --with-deps
 
-      - name: Run E2E Tests (UAT)
+      - name: 🧪 Run E2E Tests (UAT)
         working-directory: FileIntake.E2E
-        run: dotnet test --configuration Release --no-build --verbosity normal
+        run: dotnet test ./FileIntake.E2E/FileIntake.E2E.csproj -c Release --no-build --verbosity normal
