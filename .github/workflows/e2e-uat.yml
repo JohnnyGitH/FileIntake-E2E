@@ -22,6 +22,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+    
+      - name: 🪲 Debug repo contents
+        run: |
+            echo "PWD:"
+            pwd
+            echo "Top level:"
+            ls -la
+            echo "Find solutions:"
+            find . -maxdepth 4 -name "*.sln" -print
+            echo "Find csproj:"
+            find . -maxdepth 6 -name "*.csproj" -print
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
